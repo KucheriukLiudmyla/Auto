@@ -1,18 +1,12 @@
 package pages;
 
-import org.openqa.selenium.WebDriver;
-//import libs.TestData;
-//import libs.Util;
-//import org.assertj.core.api.SoftAssertions;
-//import org.junit.Assert;
-import org.openqa.selenium.By;
+import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 
-public class LoginPage extends ParentPage{
+public class LoginPage extends ParentPage {
     @FindBy(xpath = ".//input[@class='inp-text']")
     private WebElement inputEmail;
 
@@ -23,10 +17,11 @@ public class LoginPage extends ParentPage{
     private WebElement buttonLogin;
 
 
-
     public LoginPage(WebDriver webDriver) {
         super(webDriver);
     }
+
+    protected MainPage mainPage = new MainPage(webDriver);
 
     public void enterEmailInToInputEmail(String email) {
         enterTextInToElement(inputEmail, email);
@@ -39,4 +34,25 @@ public class LoginPage extends ParentPage{
     public void clickOnButtonLogin() {
         clickOnElement(buttonLogin);
     }
+
+    @Override
+    String getRelativeURL() {
+        return "/account/login";
+    }
+
+    public LoginPage checkIsRedirectLoginPage() {
+        checkURL();
+        Assert.assertTrue("LoginPage is not loaded"
+                , isElementDisplayed(buttonLogin));
+        return this;
+    }
+
+    public boolean isButtonLoginDisplayed() {
+        try {
+            return buttonLogin.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
+
